@@ -9,9 +9,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
-const URL_BASE = 'https://be-a-rym.up.railway.app/api/character';
-const API_KEY = 'fd11b046c670.0f4df70e0ee72b18e83e';
-
 const email = 'julijtejada@gmail.com';
 const password = 'klaus1408';
 
@@ -32,16 +29,21 @@ function App() {
       !access && navigate('/')
    }, [access])
 
-   const onSearch = (id) => {
-      axios(`${URL_BASE}/${id}?key=${API_KEY}`)
+   const onSearch = async (id) => {
+      try {
+         axios(`http://localhost:3001/rickandmorty/character/${id}`)
       .then(response => response.data)
       .then((data) => {
          if (data.name) {
             setCharacters((oldChars) => [...oldChars, data]);
          } else {
-            window.alert('¡No hay personajes con este ID!');
          }
       });
+   } catch (error) {
+      
+      alert('¡No hay personajes con este ID!');
+      }
+      
    }
 
    const onClose = (id) => {
